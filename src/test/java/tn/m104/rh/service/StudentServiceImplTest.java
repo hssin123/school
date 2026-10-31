@@ -43,35 +43,4 @@ class StudentServiceImplTest {
         Assertions.assertEquals(2, listU.size());
     }
 
-
-
-   /* @Test
-    @Order(3)
-    public void testAddStudent() {
-
-        Mockito.when(studentRepository.save(Mockito.anyObject())).
-                thenReturn(listStudents.add(student));
-
-
-        studentService.registerStudent(student);
-
-        Assertions.assertEquals(3, listStudents.size());
-    }
-
-
-    @Test
-    @Order(4)
-    public void testRemoveStudent() {
-
-
-        Mockito.when(studentRepository.deleteById(listStudents.get(0).getRollNumber())).
-         then(listStudents.remove(0));
-
-
-
-        Assertions.assertEquals(2, listStudents.size());
-    }
-
-*/
-
 }
