@@ -20,6 +20,12 @@
 		<jacoco.version>0.8.12</jacoco.version>
 		<sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
 		<maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+
+		<!-- Valeur par défaut : remplacée par l'agent JaCoCo au moment de prepare-agent -->
+		<argLine></argLine>
+
+		<!-- SonarQube : chemin du rapport de couverture JaCoCo -->
+		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<dependencies>
@@ -42,16 +48,18 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Swagger / OpenAPI (version compatible Spring Boot 3.3.x) -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.1.0</version>
+			<version>2.6.0</version>
 		</dependency>
 	</dependencies>
 
@@ -85,17 +93,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- Surefire : exécute les tests unitaires et transmet l'agent JaCoCo -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven-surefire-plugin.version}</version>
-				<configuration>
-					<argLine>${argLine}</argLine>
-				</configuration>
-			</plugin>
-
-			<!-- JaCoCo : couverture de code + rapport -->
+			<!-- JaCoCo : agent de couverture + rapport -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -120,11 +118,13 @@
 				</executions>
 			</plugin>
 
+			<!-- Surefire : UN SEUL bloc. @{argLine} transmet l'agent JaCoCo aux tests -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
 				<configuration>
-					<argLine>-XX:+EnableDynamicAgentLoading</argLine>
+					<argLine>@{argLine} -XX:+EnableDynamicAgentLoading -Xshare:off</argLine>
 				</configuration>
 			</plugin>
 
