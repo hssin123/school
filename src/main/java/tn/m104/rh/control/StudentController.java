@@ -6,44 +6,42 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import tn.m104.rh.entity.Student;
+import tn.m104.rh.dto.StudentDTO;
+
 import tn.m104.rh.service.IStudentService;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/student")
-@CrossOrigin(allowedHeaders="*",origins="*")
+@CrossOrigin(
+		origins = "http://localhost:4200",
+		allowedHeaders = {"Content-Type", "Authorization"},
+		methods = {RequestMethod.GET, RequestMethod.POST,
+				RequestMethod.PUT, RequestMethod.DELETE}
+)
 public class StudentController {
 
-	private IStudentService studentService;
-
+	private final IStudentService studentService;
 
 	@PostMapping("/registerStudent")
-	public Student registerStudent(@RequestBody Student student) {
-
+	public StudentDTO registerStudent(@RequestBody StudentDTO student) {
 		return studentService.registerStudent(student);
-
 	}
 
 	@GetMapping("/listStudents")
-	public List <Student> getStudents() {
-
+	public List<StudentDTO> getStudents() {
 		return studentService.getStudents();
-
 	}
-	
+
 	@DeleteMapping("/deleteStudent")
 	public void deleteStudent(@RequestParam Integer id) {
-
-		 studentService.deleteStudent(id);
-
+		studentService.deleteStudent(id);
 	}
-	
+
 	@PutMapping("/updateStudent")
-	public Student updateStudent(@RequestBody Student student) {
-
-		 return studentService.updateStudent(student);
-
+	public StudentDTO updateStudent(@RequestBody StudentDTO student) {
+		return studentService.updateStudent(student);
 	}
+
 
 }
