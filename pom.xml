@@ -89,6 +89,8 @@
 	<executable>trivy</executable>
 	<arguments>
 	<argument>fs</argument>
+		<argument>--timeout</argument>
+		<argument>30m</argument>
 	<argument>--scanners</argument>
 	<argument>vuln</argument>
 	<argument>--severity</argument>
